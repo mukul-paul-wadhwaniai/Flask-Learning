@@ -1,5 +1,6 @@
 import mysql.connector
 import json
+from flask import make_response
 
 class user_model():
 
@@ -22,31 +23,36 @@ class user_model():
         result = self.cur.fetchall()
         print(result)
         if len(result) > 0:
-            return {"payload": result}
+            res = make_response({"payload": result}, 200)
+            res.headers['Content-Type'] = 'application/json'
+            res.headers['Access-Control-Allow'] = "*"
+            return res
+            # return {"payload": result}
         else:
-            return {"message": "No Data Found"}
+            return make_response({"message": "No Data Found"}, 204)
+            # return {"message": "No Data Found"}
 
 
     def user_addone_model(self, data):
         self.cur.execute(f"INSERT INTO users(name, email, phone, role, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['role']}', '{data['password']}')")
         print(data)
-        return {"message": "User created successfully"}
+        return make_response({"message": "User created successfully"}, 201)
     
 
     def user_update_model(self, data):
         self.cur.execute(f"UPDATE users SET name='{data['name']}', email='{data['email']}', phone='{data['phone']}', role='{data['role']}', password='{data['password']}' WHERE id={data['id']}")
         print(data)
         if self.cur.rowcount > 0:
-            return {"message": "User Update successfully"}
+            return make_response({"message": "User Update successfully"}, 201)
         else:
-            return {"message": "Nothing to Update"}
+            return make_response({"message": "Nothing to Update"}, 202)
 
 
     def user_delete_model(self, id):
         self.cur.execute(f"DELETE FROM users WHERE id={id}")
         if self.cur.rowcount > 0:
-            return {"message": "User Deleted Successfully"}
+            return make_response({"message": "User Deleted Successfully"}, 200)
         else:
-            return {"message": "Nothing to Delete"}
+            return make_response({"message": "Nothing to Delete"}, 202)
 
 
