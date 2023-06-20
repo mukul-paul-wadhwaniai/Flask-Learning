@@ -12,4 +12,6 @@
                     FLASK_ENV=development
                     FLASK_DEBUG=1
                     PYTHONDONTWRITEBYTECODE=1
-4. Start Server -> flax run
+4. Install python-dotenv
+5. Install mysql-connector-python
+6. Start Server -> flax run
